@@ -134,16 +134,18 @@ int main(int argc, char **argv)
     // Generate 1000 DNA strings whose lengths follow a "Gaussian distribution"
     // with the same mean and variance that have been previous calculated
     srand(time(NULL));
-    // ofstream outputFile;
-    // if (appendOutput) {
-    //   outputFile.open("chris.out", ios::app);
-    // }
-    // else {
-    //   outputFile.open("chris.out");
-    // }
-    ofstream outputFile{"chris.out", appendOutput ? ios::app : ios::out};
-    // outputFile << inputName << "\n---------------------\n";
-    // FIXME: Find out why some strings are of length 0
+    ofstream outputFile;
+    if (appendOutput) {
+      outputFile.open("chris.out", ios::app);
+    }
+    else {
+      outputFile.open("chris.out");
+      outputFile << "Christopher Chang" << endl;
+      outputFile << "2344338" << endl;
+      outputFile << "CPSC 350" << endl;
+    }
+    outputFile << inputName << "\n---------------------\n";
+
     for (int i = 0; i < 1000; ++i) {
       int len = randLen(mean, stddev);
       if (len < 1) {
