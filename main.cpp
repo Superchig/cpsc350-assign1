@@ -18,9 +18,8 @@ double genGaussian()
   return sqrt(-2 * log(a)) * cos(2 * PI * b);
 }
 
-// Generate a random length for a DNA string, given a mean and standard deviation
-// Truncates the length
-// May want to add one to avoid a length of 0
+// Generate a random length for a DNA string, given a mean and standard
+// deviation Truncates the length May want to add one to avoid a length of 0
 int randLen(int mean, double stddev)
 {
   return (stddev * genGaussian()) + mean;
@@ -34,11 +33,14 @@ string randString(int len)
     double prob = (double)rand() / RAND_MAX;
     if (prob < 0.25) {
       result += 'A';
-    } else if (prob < 0.50) {
+    }
+    else if (prob < 0.50) {
       result += 'C';
-    } else if (prob < 0.75) {
+    }
+    else if (prob < 0.75) {
       result += 'T';
-    } else { // Must be between 0.75 and 1.00
+    }
+    else { // Must be between 0.75 and 1.00
       result += 'G';
     }
   }
@@ -53,92 +55,118 @@ int main(int argc, char **argv)
     return 1;
   }
 
+  bool appendOutput = false;
   string inputName = argv[1];
-  ifstream inputFile{inputName};
-  if (!inputFile.is_open()) {
-    cerr << "Error: Could not open file." << endl;
-    return 2;
-  }
+  while (true) {
+    ifstream inputFile{inputName};
 
-  // Make first pass to calculate mean and count, count nucleotide occurrences
-  int countA = 0;
-  int countC = 0;
-  int countT = 0;
-  int countG = 0;
-  int count = 0;
-  int sum = 0;
-  string dnaString;
-  while (inputFile >> dnaString) {
-    // Calculations for mean & count
-    ++count;
-    sum += dnaString.size();
+    if (!inputFile.is_open()) {
+      cerr << "Error: Could not open file." << endl;
+      return 2;
+    }
 
-    // Count ACTG nucleotides
-    for (char c : dnaString) {
-      c = tolower(c);
-      if (c == 'a') {
-        ++countA;
-      }
-      else if (c == 'c') {
-        ++countC;
-      }
-      else if (c == 'g') {
-        ++countG;
-      }
-      else if (c == 't') {
-        ++countT;
-      }
-      else {
-        cerr << "Error at line " << count << ": invalid character '" << c
-             << '\'' << endl;
-        inputFile.close();
-        return 3;
+    // Make first pass to calculate mean and count, count nucleotide occurrences
+    int countA = 0;
+    int countC = 0;
+    int countT = 0;
+    int countG = 0;
+    int count = 0;
+    int sum = 0;
+    string dnaString;
+    while (inputFile >> dnaString) {
+      // Calculations for mean & count
+      ++count;
+      sum += dnaString.size();
+
+      // Count ACTG nucleotides
+      for (char c : dnaString) {
+        c = tolower(c);
+        if (c == 'a') {
+          ++countA;
+        }
+        else if (c == 'c') {
+          ++countC;
+        }
+        else if (c == 'g') {
+          ++countG;
+        }
+        else if (c == 't') {
+          ++countT;
+        }
+        else {
+          cerr << "Error at line " << count << ": invalid character '" << c
+               << '\'' << endl;
+          inputFile.close();
+          return 3;
+        }
       }
     }
-  }
-  double mean = (double)sum / count;
-  double probA = (double)countA / sum;
-  double probC = (double)countC / sum;
-  double probT = (double)countT / sum;
-  double probG = (double)countG / sum;
+    double mean = (double)sum / count;
+    double probA = (double)countA / sum;
+    double probC = (double)countC / sum;
+    double probT = (double)countT / sum;
+    double probG = (double)countG / sum;
 
-  cout << "Probability of A: " << probA << endl;
-  cout << "Probability of C: " << probC << endl;
-  cout << "Probability of T: " << probT << endl;
-  cout << "Probability of G: " << probG << endl;
+    cout << "Probability of A: " << probA << endl;
+    cout << "Probability of C: " << probC << endl;
+    cout << "Probability of T: " << probT << endl;
+    cout << "Probability of G: " << probG << endl;
 
-  cout << "sum: " << sum << endl;
-  cout << "mean: " << mean << endl;
-  inputFile.close();
+    cout << "sum: " << sum << endl;
+    cout << "mean: " << mean << endl;
+    inputFile.close();
 
-  // Now that we have the mean, make the second pass to calculate variance and
-  // standard deviation
-  inputFile.open(inputName);
-  double squareSum = 0.0;
-  while (inputFile >> dnaString) {
-    double square = (mean - dnaString.size()) * (mean - dnaString.size());
-    squareSum += square;
-  }
-  double variance = squareSum / count;
-  double stddev = sqrt(variance);
-
-  cout << "variance: " << variance << endl;
-  cout << "standard deviation: " << stddev << endl;
-  inputFile.close();
-
-  // Generate 1000 DNA strings whose lengths follow a "Gaussian distribution"
-  // with the same mean and variance that have been previous calculated
-  srand(time(NULL));
-  ofstream outputFile{"chris.out"};
-  // FIXME: Find out why some strings are of length 0
-  for (int i = 0; i < 1000; ++i) {
-    int len = randLen(mean, stddev);
-    if (len < 1) {
-      cout << i << ": length of: " << len << endl;
+    // Now that we have the mean, make the second pass to calculate variance and
+    // standard deviation
+    inputFile.open(inputName);
+    double squareSum = 0.0;
+    while (inputFile >> dnaString) {
+      double square = (mean - dnaString.size()) * (mean - dnaString.size());
+      squareSum += square;
     }
-    outputFile << randString(len) << endl;
+    double variance = squareSum / count;
+    double stddev = sqrt(variance);
+
+    cout << "variance: " << variance << endl;
+    cout << "standard deviation: " << stddev << endl;
+    inputFile.close();
+
+    // Generate 1000 DNA strings whose lengths follow a "Gaussian distribution"
+    // with the same mean and variance that have been previous calculated
+    srand(time(NULL));
+    // ofstream outputFile;
+    // if (appendOutput) {
+    //   outputFile.open("chris.out", ios::app);
+    // }
+    // else {
+    //   outputFile.open("chris.out");
+    // }
+    ofstream outputFile{"chris.out", appendOutput ? ios::app : ios::out};
+    // outputFile << inputName << "\n---------------------\n";
+    // FIXME: Find out why some strings are of length 0
+    for (int i = 0; i < 1000; ++i) {
+      int len = randLen(mean, stddev);
+      if (len < 1) {
+        cout << i << ": length of: " << len << endl;
+      }
+      outputFile << randString(len) << endl;
+    }
+    outputFile.close();
+
+    // Set up the loop for processing another list, if the user chooses to
+    cout << "Do you want to process another list? (yes/no) ";
+    string choice;
+    cin >> choice;
+    if (choice == "yes" || choice == "y") {
+      appendOutput = true;
+
+      cout << "Enter name of file: ";
+      cin >> inputName;
+    }
+    else {
+      break;
+    }
   }
-  outputFile.close();
 
   return 0;
 }
