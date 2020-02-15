@@ -65,11 +65,31 @@ int main(int argc, char **argv)
       return 2;
     }
 
-    // Make first pass to calculate mean and count, count nucleotide occurrences
+    // Make first pass to calculate mean and count, count nucleotide
+    // and bigram occurrences
+
     int countA = 0;
     int countC = 0;
     int countT = 0;
     int countG = 0;
+
+    int countAA = 0;
+    int countAC = 0;
+    int countAT = 0;
+    int countAG = 0;
+    int countCA = 0;
+    int countCC = 0;
+    int countCT = 0;
+    int countCG = 0;
+    int countTA = 0;
+    int countTC = 0;
+    int countTT = 0;
+    int countTG = 0;
+    int countGA = 0;
+    int countGC = 0;
+    int countGT = 0;
+    int countGG = 0;
+
     int count = 0;
     int sum = 0;
     string dnaString;
@@ -100,6 +120,60 @@ int main(int argc, char **argv)
           return 3;
         }
       }
+
+      // Count bigrams
+      for (size_t /* Used b/c of compiler warning */ i = 0; i < dnaString.size();
+           i += 2) {
+        string twochars = dnaString.substr(i, 2);
+        if (twochars == "AA") {
+          ++countAA;
+        }
+        else if (twochars == "AC") {
+          ++countAC;
+        }
+        else if (twochars == "AT") {
+          ++countAT;
+        }
+        else if (twochars == "AG") {
+          ++countAG;
+        }
+        else if (twochars == "CA") {
+          ++countCA;
+        }
+        else if (twochars == "CC") {
+          ++countCC;
+        }
+        else if (twochars == "CT") {
+          ++countCT;
+        }
+        else if (twochars == "CG") {
+          ++countCG;
+        }
+        else if (twochars == "TA") {
+          ++countTA;
+        }
+        else if (twochars == "TC") {
+          ++countTC;
+        }
+        else if (twochars == "TT") {
+          ++countTT;
+        }
+        else if (twochars == "TG") {
+          ++countTG;
+        }
+        else if (twochars == "GA") {
+          ++countGA;
+        }
+        else if (twochars == "GC") {
+          ++countGC;
+        }
+        else if (twochars == "GT") {
+          ++countGT;
+        }
+        else if (twochars == "GG") {
+          ++countGG;
+        }
+      }
     }
     double mean = (double)sum / count;
     double probA = (double)countA / sum;
@@ -111,6 +185,43 @@ int main(int argc, char **argv)
     cout << "Probability of C: " << probC << endl;
     cout << "Probability of T: " << probT << endl;
     cout << "Probability of G: " << probG << endl;
+
+    int sumBigram = countAA + countAC + countAT + countAG + countCA + countCC +
+                    countCT + countCG + countTA + countTC + countTT + countTG +
+                    countGA + countGC + countGT + countGG;
+    double probAA = (double)countAA / sumBigram;
+    double probAC = (double)countAC / sumBigram;
+    double probAT = (double)countAT / sumBigram;
+    double probAG = (double)countAG / sumBigram;
+    double probCA = (double)countCA / sumBigram;
+    double probCC = (double)countCC / sumBigram;
+    double probCT = (double)countCT / sumBigram;
+    double probCG = (double)countCG / sumBigram;
+    double probTA = (double)countTA / sumBigram;
+    double probTC = (double)countTC / sumBigram;
+    double probTT = (double)countTT / sumBigram;
+    double probTG = (double)countTG / sumBigram;
+    double probGA = (double)countGA / sumBigram;
+    double probGC = (double)countGC / sumBigram;
+    double probGT = (double)countGT / sumBigram;
+    double probGG = (double)countGG / sumBigram;
+
+    cout << "Probability of bigram probAA: " << probAA << endl;
+    cout << "Probability of bigram probAC: " << probAC << endl;
+    cout << "Probability of bigram probAT: " << probAT << endl;
+    cout << "Probability of bigram probAG: " << probAG << endl;
+    cout << "Probability of bigram probCA: " << probCA << endl;
+    cout << "Probability of bigram probCC: " << probCC << endl;
+    cout << "Probability of bigram probCT: " << probCT << endl;
+    cout << "Probability of bigram probCG: " << probCG << endl;
+    cout << "Probability of bigram probTA: " << probTA << endl;
+    cout << "Probability of bigram probTC: " << probTC << endl;
+    cout << "Probability of bigram probTT: " << probTT << endl;
+    cout << "Probability of bigram probTG: " << probTG << endl;
+    cout << "Probability of bigram probGA: " << probGA << endl;
+    cout << "Probability of bigram probGC: " << probGC << endl;
+    cout << "Probability of bigram probGT: " << probGT << endl;
+    cout << "Probability of bigram probGG: " << probGG << endl;
 
     cout << "sum: " << sum << endl;
     cout << "mean: " << mean << endl;
