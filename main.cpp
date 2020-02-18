@@ -206,22 +206,22 @@ int main(int argc, char **argv)
     double probGT = (double)countGT / sumBigram;
     double probGG = (double)countGG / sumBigram;
 
-    cout << "Probability of bigram probAA: " << probAA << endl;
-    cout << "Probability of bigram probAC: " << probAC << endl;
-    cout << "Probability of bigram probAT: " << probAT << endl;
-    cout << "Probability of bigram probAG: " << probAG << endl;
-    cout << "Probability of bigram probCA: " << probCA << endl;
-    cout << "Probability of bigram probCC: " << probCC << endl;
-    cout << "Probability of bigram probCT: " << probCT << endl;
-    cout << "Probability of bigram probCG: " << probCG << endl;
-    cout << "Probability of bigram probTA: " << probTA << endl;
-    cout << "Probability of bigram probTC: " << probTC << endl;
-    cout << "Probability of bigram probTT: " << probTT << endl;
-    cout << "Probability of bigram probTG: " << probTG << endl;
-    cout << "Probability of bigram probGA: " << probGA << endl;
-    cout << "Probability of bigram probGC: " << probGC << endl;
-    cout << "Probability of bigram probGT: " << probGT << endl;
-    cout << "Probability of bigram probGG: " << probGG << endl;
+    cout << "Probability of bigram AA: " << probAA << endl;
+    cout << "Probability of bigram AC: " << probAC << endl;
+    cout << "Probability of bigram AT: " << probAT << endl;
+    cout << "Probability of bigram AG: " << probAG << endl;
+    cout << "Probability of bigram CA: " << probCA << endl;
+    cout << "Probability of bigram CC: " << probCC << endl;
+    cout << "Probability of bigram CT: " << probCT << endl;
+    cout << "Probability of bigram CG: " << probCG << endl;
+    cout << "Probability of bigram TA: " << probTA << endl;
+    cout << "Probability of bigram TC: " << probTC << endl;
+    cout << "Probability of bigram TT: " << probTT << endl;
+    cout << "Probability of bigram TG: " << probTG << endl;
+    cout << "Probability of bigram GA: " << probGA << endl;
+    cout << "Probability of bigram GC: " << probGC << endl;
+    cout << "Probability of bigram GT: " << probGT << endl;
+    cout << "Probability of bigram GG: " << probGG << endl;
 
     cout << "sum: " << sum << endl;
     cout << "mean: " << mean << endl;
@@ -259,9 +259,9 @@ int main(int argc, char **argv)
 
     for (int i = 0; i < 1000; ++i) {
       int len = randLen(mean, stddev);
-      if (len < 1) {
-        cout << i << ": length of: " << len << endl;
-      }
+      // if (len < 1) {
+      //   cout << i << ": length of: " << len << endl;
+      // }
       outputFile << randString(len) << endl;
     }
     outputFile.close();
