@@ -19,7 +19,7 @@ double genGaussian()
 }
 
 // Generate a random length for a DNA string, given a mean and standard
-// deviation Truncates the length May want to add one to avoid a length of 0
+// deviation. Truncates the length. May want to add one to avoid a length of 0
 int randLen(int mean, double stddev)
 {
   return (stddev * genGaussian()) + mean;
