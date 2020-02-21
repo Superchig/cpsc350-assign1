@@ -5,8 +5,6 @@
 
 using namespace std;
 
-const double PI = 3.141592653589793238;
-
 // Generates a random Gaussian using the Box-Muller transform (whatever that
 // means, this just implements the equations from the assignment pdf)
 double genGaussian()
