@@ -15,32 +15,37 @@ double genGaussian()
   // cout << "a: " << a << endl;
   double b = (double)rand() / RAND_MAX;
   // cout << "b: " << b << endl;
-  return sqrt(-2 * log(a)) * cos(2 * PI * b);
+  return sqrt(-2 * log(a)) * cos(2 * M_PI * b);
 }
 
 // Generate a random length for a DNA string, given a mean and standard
 // deviation. Truncates the length. May want to add one to avoid a length of 0
 int randLen(int mean, double stddev)
 {
-  return (stddev * genGaussian()) + mean;
+  // Perhaps add 0.5 in order to round up when the orig value's decimal part > 0.5 and
+  // round down when it < 0.5
+  // Adding 1.0 almost seems to compensate for the decrease, but it still seems
+  // to dip slightly. Why is that?
+  return (stddev * genGaussian() + 1.0) + mean;
 }
 
 // Returns a random DNA string of a specified length
-string randString(int len)
+string randString(int len, double probA, double probC, double probT,
+  double probG)
 {
   string result;
   for (int i = 0; i < len; ++i) {
     double prob = (double)rand() / RAND_MAX;
-    if (prob < 0.25) {
+    if (prob < probA) {
       result += 'A';
     }
-    else if (prob < 0.50) {
+    else if (prob < probA + probC) {
       result += 'C';
     }
-    else if (prob < 0.75) {
+    else if (prob < probA + probC + probT) {
       result += 'T';
     }
-    else { // Must be between 0.75 and 1.00
+    else { // Must be between probA + probC + probT and 1.00
       result += 'G';
     }
   }
@@ -175,17 +180,20 @@ int main(int argc, char **argv)
         }
       }
     }
+    // Make calculations based off of what has been counted
     double mean = (double)sum / count;
     double probA = (double)countA / sum;
     double probC = (double)countC / sum;
     double probT = (double)countT / sum;
     double probG = (double)countG / sum;
 
+    // Print out the probability of each nucleotid eoccurring
     cout << "Probability of A: " << probA << endl;
     cout << "Probability of C: " << probC << endl;
     cout << "Probability of T: " << probT << endl;
     cout << "Probability of G: " << probG << endl;
 
+    // Calculate the probabilities of each bigram occurring
     int sumBigram = countAA + countAC + countAT + countAG + countCA + countCC +
                     countCT + countCG + countTA + countTC + countTT + countTG +
                     countGA + countGC + countGT + countGG;
@@ -206,6 +214,7 @@ int main(int argc, char **argv)
     double probGT = (double)countGT / sumBigram;
     double probGG = (double)countGG / sumBigram;
 
+    // Print out the probability of bigrams
     cout << "Probability of bigram AA: " << probAA << endl;
     cout << "Probability of bigram AC: " << probAC << endl;
     cout << "Probability of bigram AT: " << probAT << endl;
@@ -251,18 +260,18 @@ int main(int argc, char **argv)
     }
     else {
       outputFile.open("chris.out");
-      outputFile << "Christopher Chang" << endl;
-      outputFile << "2344338" << endl;
-      outputFile << "CPSC 350" << endl;
+      // outputFile << "Christopher Chang" << endl;
+      // outputFile << "2344338" << endl;
+      // outputFile << "CPSC 350" << endl;
     }
-    outputFile << inputName << "\n---------------------\n";
+    // outputFile << inputName << "\n---------------------\n";
 
     for (int i = 0; i < 1000; ++i) {
       int len = randLen(mean, stddev);
       // if (len < 1) {
       //   cout << i << ": length of: " << len << endl;
       // }
-      outputFile << randString(len) << endl;
+      outputFile << randString(len, probA, probC, probT, probG) << endl;
     }
     outputFile.close();
 
