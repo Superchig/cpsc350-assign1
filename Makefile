@@ -1,7 +1,10 @@
 CPPFLAGS=-Wall -g
 CXX=g++
 
-all: assign_1
+all: assignment_1
 
-assign_1: main.cpp
+assignment_1: main.cpp
 	$(CXX) $(CPPFLAGS) $< -o $@
+
+recycle:
+	tail -n +30 chris.out > recin.txt

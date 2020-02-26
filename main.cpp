@@ -20,16 +20,12 @@ double genGaussian()
 // deviation. Truncates the length. May want to add one to avoid a length of 0
 int randLen(int mean, double stddev)
 {
-  // Perhaps add 0.5 in order to round up when the orig value's decimal part > 0.5 and
-  // round down when it < 0.5
-  // Adding 1.0 almost seems to compensate for the decrease, but it still seems
-  // to dip slightly. Why is that?
   return (stddev * genGaussian() + 1.0) + mean;
 }
 
 // Returns a random DNA string of a specified length
 string randString(int len, double probA, double probC, double probT,
-  double probG)
+                  double probG)
 {
   string result;
   for (int i = 0; i < len; ++i) {
@@ -67,6 +63,18 @@ int main(int argc, char **argv)
       cerr << "Error: Could not open file." << endl;
       return 2;
     }
+
+    ofstream outputFile;
+    if (appendOutput) {
+      outputFile.open("chris.out", ios::app);
+    }
+    else {
+      outputFile.open("chris.out");
+      outputFile << "Christopher Chang" << endl;
+      outputFile << "2344338" << endl;
+      outputFile << "CPSC 350" << endl;
+    }
+    outputFile << inputName << "\n---------------------\n";
 
     // Make first pass to calculate mean and count, count nucleotide
     // and bigram occurrences
@@ -125,9 +133,13 @@ int main(int argc, char **argv)
       }
 
       // Count bigrams
-      for (size_t /* Used b/c of compiler warning */ i = 0; i < dnaString.size();
-           i += 2) {
+      for (size_t /* Used b/c of compiler warning */ i = 0;
+           i < dnaString.size() - 2; i += 2) {
         string twochars = dnaString.substr(i, 2);
+        // cout << twochars << endl;
+        string twocharsUpper;
+        twocharsUpper += toupper(twochars.at(0));
+        twocharsUpper += toupper(twochars.at(1));
         if (twochars == "AA") {
           ++countAA;
         }
@@ -186,10 +198,10 @@ int main(int argc, char **argv)
     double probG = (double)countG / sum;
 
     // Print out the probability of each nucleotid eoccurring
-    cout << "Probability of A: " << probA << endl;
-    cout << "Probability of C: " << probC << endl;
-    cout << "Probability of T: " << probT << endl;
-    cout << "Probability of G: " << probG << endl;
+    outputFile << "Probability of A: " << probA << endl;
+    outputFile << "Probability of C: " << probC << endl;
+    outputFile << "Probability of T: " << probT << endl;
+    outputFile << "Probability of G: " << probG << endl;
 
     // Calculate the probabilities of each bigram occurring
     int sumBigram = countAA + countAC + countAT + countAG + countCA + countCC +
@@ -213,25 +225,25 @@ int main(int argc, char **argv)
     double probGG = (double)countGG / sumBigram;
 
     // Print out the probability of bigrams
-    cout << "Probability of bigram AA: " << probAA << endl;
-    cout << "Probability of bigram AC: " << probAC << endl;
-    cout << "Probability of bigram AT: " << probAT << endl;
-    cout << "Probability of bigram AG: " << probAG << endl;
-    cout << "Probability of bigram CA: " << probCA << endl;
-    cout << "Probability of bigram CC: " << probCC << endl;
-    cout << "Probability of bigram CT: " << probCT << endl;
-    cout << "Probability of bigram CG: " << probCG << endl;
-    cout << "Probability of bigram TA: " << probTA << endl;
-    cout << "Probability of bigram TC: " << probTC << endl;
-    cout << "Probability of bigram TT: " << probTT << endl;
-    cout << "Probability of bigram TG: " << probTG << endl;
-    cout << "Probability of bigram GA: " << probGA << endl;
-    cout << "Probability of bigram GC: " << probGC << endl;
-    cout << "Probability of bigram GT: " << probGT << endl;
-    cout << "Probability of bigram GG: " << probGG << endl;
+    outputFile << "Probability of bigram AA: " << probAA << endl;
+    outputFile << "Probability of bigram AC: " << probAC << endl;
+    outputFile << "Probability of bigram AT: " << probAT << endl;
+    outputFile << "Probability of bigram AG: " << probAG << endl;
+    outputFile << "Probability of bigram CA: " << probCA << endl;
+    outputFile << "Probability of bigram CC: " << probCC << endl;
+    outputFile << "Probability of bigram CT: " << probCT << endl;
+    outputFile << "Probability of bigram CG: " << probCG << endl;
+    outputFile << "Probability of bigram TA: " << probTA << endl;
+    outputFile << "Probability of bigram TC: " << probTC << endl;
+    outputFile << "Probability of bigram TT: " << probTT << endl;
+    outputFile << "Probability of bigram TG: " << probTG << endl;
+    outputFile << "Probability of bigram GA: " << probGA << endl;
+    outputFile << "Probability of bigram GC: " << probGC << endl;
+    outputFile << "Probability of bigram GT: " << probGT << endl;
+    outputFile << "Probability of bigram GG: " << probGG << endl;
 
-    cout << "sum: " << sum << endl;
-    cout << "mean: " << mean << endl;
+    outputFile << "sum: " << sum << endl;
+    outputFile << "mean: " << mean << endl;
     inputFile.close();
 
     // Now that we have the mean, make the second pass to calculate variance and
@@ -245,25 +257,13 @@ int main(int argc, char **argv)
     double variance = squareSum / count;
     double stddev = sqrt(variance);
 
-    cout << "variance: " << variance << endl;
-    cout << "standard deviation: " << stddev << endl;
+    outputFile << "variance: " << variance << endl;
+    outputFile << "standard deviation: " << stddev << endl;
     inputFile.close();
 
     // Generate 1000 DNA strings whose lengths follow a "Gaussian distribution"
     // with the same mean and variance that have been previous calculated
     srand(time(NULL));
-    ofstream outputFile;
-    if (appendOutput) {
-      outputFile.open("chris.out", ios::app);
-    }
-    else {
-      outputFile.open("chris.out");
-      // outputFile << "Christopher Chang" << endl;
-      // outputFile << "2344338" << endl;
-      // outputFile << "CPSC 350" << endl;
-    }
-    // outputFile << inputName << "\n---------------------\n";
-
     for (int i = 0; i < 1000; ++i) {
       int len = randLen(mean, stddev);
       // if (len < 1) {
