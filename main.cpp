@@ -20,6 +20,7 @@ double genGaussian()
 // deviation. Truncates the length. May want to add one to avoid a length of 0
 int randLen(int mean, double stddev)
 {
+  // Add 1.0 to compensate for truncation of double to int
   return (stddev * genGaussian() + 1.0) + mean;
 }
 
@@ -105,6 +106,7 @@ int main(int argc, char **argv)
     int sum = 0;
     string dnaString;
     while (inputFile >> dnaString) {
+      // cout << dnaString << endl;
       // Calculations for mean & count
       ++count;
       sum += dnaString.size();
@@ -136,56 +138,56 @@ int main(int argc, char **argv)
       for (size_t /* Used b/c of compiler warning */ i = 0;
            i < dnaString.size() - 1; i += 2) {
         string twochars = dnaString.substr(i, 2);
-        cout << twochars << endl;
+        // cout << twochars << endl;
         string twocharsUpper;
         twocharsUpper += toupper(twochars.at(0));
         twocharsUpper += toupper(twochars.at(1));
-        if (twochars == "AA") {
+        if (twocharsUpper == "AA") {
           ++countAA;
         }
-        else if (twochars == "AC") {
+        else if (twocharsUpper == "AC") {
           ++countAC;
         }
-        else if (twochars == "AT") {
+        else if (twocharsUpper == "AT") {
           ++countAT;
         }
-        else if (twochars == "AG") {
+        else if (twocharsUpper == "AG") {
           ++countAG;
         }
-        else if (twochars == "CA") {
+        else if (twocharsUpper == "CA") {
           ++countCA;
         }
-        else if (twochars == "CC") {
+        else if (twocharsUpper == "CC") {
           ++countCC;
         }
-        else if (twochars == "CT") {
+        else if (twocharsUpper == "CT") {
           ++countCT;
         }
-        else if (twochars == "CG") {
+        else if (twocharsUpper == "CG") {
           ++countCG;
         }
-        else if (twochars == "TA") {
+        else if (twocharsUpper == "TA") {
           ++countTA;
         }
-        else if (twochars == "TC") {
+        else if (twocharsUpper == "TC") {
           ++countTC;
         }
-        else if (twochars == "TT") {
+        else if (twocharsUpper == "TT") {
           ++countTT;
         }
-        else if (twochars == "TG") {
+        else if (twocharsUpper == "TG") {
           ++countTG;
         }
-        else if (twochars == "GA") {
+        else if (twocharsUpper == "GA") {
           ++countGA;
         }
-        else if (twochars == "GC") {
+        else if (twocharsUpper == "GC") {
           ++countGC;
         }
-        else if (twochars == "GT") {
+        else if (twocharsUpper == "GT") {
           ++countGT;
         }
-        else if (twochars == "GG") {
+        else if (twocharsUpper == "GG") {
           ++countGG;
         }
       }

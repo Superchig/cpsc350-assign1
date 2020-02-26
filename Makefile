@@ -1,9 +1,9 @@
 CPPFLAGS=-Wall -g
 CXX=g++
 
-all: assignment_1
+all: assignment1.exe
 
-assignment_1: main.cpp
+assignment1.exe: main.cpp
 	$(CXX) $(CPPFLAGS) $< -o $@
 
 recycle:

@@ -17,3 +17,13 @@ I used http://www.cplusplus.com/reference/cstdlib/srand/ and http://www.cplusplu
 
 I used https://en.cppreference.com/w/cpp/string/byte/tolower for information
 on tolower.
+
+## Instructions to run
+1. Compile with
+```
+make
+```
+2. Run with
+```
+./assignment1.exe [input file]
+```
