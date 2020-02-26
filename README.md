@@ -14,3 +14,6 @@ I used http://www.cplusplus.com/reference/cmath/log/ for the natural log.
 I used http://www.cplusplus.com/reference/cmath/cos/ for cosine.
 
 I used http://www.cplusplus.com/reference/cstdlib/srand/ and http://www.cplusplus.com/reference/ctime/time/ for information on srand.
+
+I used https://en.cppreference.com/w/cpp/string/byte/tolower for information
+on tolower.
