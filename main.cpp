@@ -134,9 +134,9 @@ int main(int argc, char **argv)
 
       // Count bigrams
       for (size_t /* Used b/c of compiler warning */ i = 0;
-           i < dnaString.size() - 2; i += 2) {
+           i < dnaString.size() - 1; i += 2) {
         string twochars = dnaString.substr(i, 2);
-        // cout << twochars << endl;
+        cout << twochars << endl;
         string twocharsUpper;
         twocharsUpper += toupper(twochars.at(0));
         twocharsUpper += toupper(twochars.at(1));
