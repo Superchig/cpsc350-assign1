@@ -3,6 +3,8 @@ Christopher Chang
 
 2344338
 
+Section 1
+
 ## References
 I used http://www.cplusplus.com/doc/tutorial/files/ to refresh my memory about
 reading and writing to files.
